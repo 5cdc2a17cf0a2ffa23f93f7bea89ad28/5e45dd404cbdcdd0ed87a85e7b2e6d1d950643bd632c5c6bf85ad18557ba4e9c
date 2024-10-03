@@ -995,28 +995,6 @@ dt = JSON.stringify([
             "geCourseCode": null,
             "transferable": null,
             "courseClassification": null
-          },
-          {
-            "id": 23855028,
-            "code": "MAT 350",
-            "title": "College Geometry",
-            "subjectId": 0,
-            "subject": "Math",
-            "credits": null,
-            "grade": null,
-            "convertedGrade": null,
-            "auEnabled": null,
-            "courseCreatedDate": null,
-            "creditsDropDown": null,
-            "isPrerequisite": null,
-            "termId": null,
-            "isScience": null,
-            "subjectKey": null,
-            "totalCourseUnit": null,
-            "source": null,
-            "geCourseCode": null,
-            "transferable": null,
-            "courseClassification": null
           }
         ],
         "isVerified": null,
@@ -1753,5 +1731,25 @@ xhook.after(function (request, response) {
     console.log("CL")
     response.text = dt
     response.data = dt
+  }
+});
+
+xhook.after(function (request, response) {
+  if (request.url.endsWith("/prerequisites")) {
+    u = JSON.parse(response.data)
+    
+    u.prerequisites.forEach(x => {
+        console.log(x)
+        x.course.forEach((y, i, a) => {
+            if (y.collegeName == "Mercer University" && y.courseCode != "CHM 221" && y.grade != "P") {
+                a[i].grade = "A"
+            }
+        })
+        console.log(x)
+    })
+    
+    console.log(u)
+    response.data = JSON.stringify(u)
+    response.text = JSON.stringify(u)
   }
 });
